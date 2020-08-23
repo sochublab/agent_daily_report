@@ -1,4 +1,5 @@
 import os
+from os.path import isfile, join
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -11,8 +12,8 @@ from collections import Counter
 import pandas as pd
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
+tmploc = f'{dir_path}/uploads/tmp/'
 
-# Create your views here.
 
 def index(response):
     return render(response, "main/home.html")
@@ -23,7 +24,12 @@ def v1(response):
 
 
 def report(request):
-
+    # Delete all from uploads folder
+    upath = f'{dir_path}/uploads'
+    filelist = [f for f in os.listdir(upath) if isfile(join(upath, f))]
+    print(filelist)
+    for f in filelist:
+        os.remove(os.path.join(upath, f))
     htmldata = "<div class='container'><p></p>"
     if request.method == 'POST':
         form = CreateNewList(request.POST, request.FILES)
@@ -34,7 +40,7 @@ def report(request):
             d = formdata.get('datefield')
             handle_uploaded_file(request.FILES['uploadfile'], d)
             print(n, d, f)
-            htmldata = generate_report()
+            htmldata = generate_report(d)
     else:
         form = CreateNewList()
     return render(request, "main/report.html", {"form": form, 'html_table': htmldata})
@@ -47,7 +53,11 @@ def handle_uploaded_file(f, filename):
 
 
 def makeValidJSON():
-    input_file = f'{dir_path}/uploads/export-2020-08-21-0732-10093643-900000047903d2ae.json'
+    # Get the file extracted in tmp folder
+    filelist = [f for f in os.listdir(tmploc)]
+    firstfile = filelist[0]
+
+    input_file = f'{dir_path}/uploads/tmp/{firstfile}'
     output_file = f'{dir_path}/uploads/exportfile.json'
 
     with open(input_file, 'r') as all_input_file_lines:
@@ -62,9 +72,14 @@ def makeValidJSON():
         write_output_file.writelines('{"tickets":[' + '\n' + all_lines_with_comma[:-3] + "\n}]}")
 
 
-def generate_report():
-    with zipfile.ZipFile(f'{dir_path}/uploads/2020-01-01.zip', 'r') as zip_ref:
-        zip_ref.extractall(f'{dir_path}/uploads/')
+def generate_report(current_date):
+    # Delete all files in tmp folder then only extract the zip file there.
+    filelist = [f for f in os.listdir(tmploc)]
+    for f in filelist:
+        os.remove(os.path.join(tmploc, f))
+    # All files removed
+    with zipfile.ZipFile(f'{dir_path}/uploads/{current_date}.zip', 'r') as zip_ref:
+        zip_ref.extractall(tmploc)  # Extract in tmp folder for now.
     print("Zip Extracted")
     makeValidJSON()
     # open the json file and read it
@@ -72,7 +87,7 @@ def generate_report():
     # Opening JSON file
     f = open(exportfilepath, 'r')
     # This date needs to be from Tkinter and dynamic. May be format it as variable
-    COMMENT_DATE = '2020-08-20'
+    COMMENT_DATE = current_date
 
     # On second thought may be this needs to be webapp
     agent_name_map = {

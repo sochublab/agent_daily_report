@@ -14,6 +14,7 @@
 <body>
 <div class="container">
 
+    <div class="col-sm-4">
     <h2>Report Generator</h2>
     <p>Upload ZIP file downloaded from Zendesk. Enter the date for report date.</p>
     {% load crispy_forms_tags %}
@@ -22,6 +23,7 @@
         {{form|crispy}}
         <button type="submit" name="submit" class="btn btn-primary">Submit</button>
     </form>
+    </div>
 
     <div class="container">
         <br>
