@@ -94,7 +94,7 @@ def generate_report(current_date):
         '//samir': 'Supesh Basnet',
         '//priya': 'Priyanka Karanjit',
         '//raja': 'Rashmi Napit',
-        '//sonu': 'Pratima Dewan',
+        '//sona': 'Pratima Dewan',
         '//dipa': 'Dipina Shrestha',
         '//kiran': "Pragati Das",
         '//dev': 'Bibidh Ghimire',
@@ -102,6 +102,15 @@ def generate_report(current_date):
         '//sima': 'Sabina Dhakal',
         '//ami': 'Amina Rana',
         '//abhi': 'Sharmila Parajuli',
+        '//amrit': 'Anjal L. Shrestha',
+        '//karan': 'Bipin Chauhan',
+        '//namuna': 'Santosh K. Shrestha',
+        '//ravi': 'Roshan Khanal',
+        '//rina': 'Dipak K. Shrestha',
+        '//riya': 'Gita Sigdel',
+        '//sanju': 'Anwar Hussain',
+        '//saurav': 'Santosh Chhetri',
+        '//sunil': 'Suman Thakuri',
         '//prem': 'Dipendra',
         '//anu': 'Kiran',
         '//isha': 'Sagar',
@@ -110,6 +119,9 @@ def generate_report(current_date):
         '//suba': 'Shiva',
         '//samar': 'Suzit',
         '//eva': 'Avanthi',
+        '//raj': 'Suresh',
+        '//puja': 'Punam'
+
     }
 
     # returns JSON object as
@@ -117,7 +129,11 @@ def generate_report(current_date):
     data = json.load(f)
     agent_name = []
     # We might need to update the variables as needed
-    invalid_names = ['//www', None, '//maps', '//youtube', '//youtu', '//payment', '//twitter', '//t', '//bit']
+    invalid_names = [
+        '//www', None, '//maps', '//youtube', '//youtu', '//prbt',
+        '//payment', '//twitter', '//t', '//bit', '//ncell', '//lms',
+
+    ]
     alltickets = data['tickets']
     for ticket in alltickets:
         for comment in ticket['comments']:
