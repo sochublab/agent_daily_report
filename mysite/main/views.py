@@ -107,7 +107,7 @@ def generate_report(current_date):
         '//namuna': 'Santosh K. Shrestha',
         '//ravi': 'Roshan Khanal',
         '//rina': 'Dipak K. Shrestha',
-        '//riya': 'Gita Sigdel',
+        '//anjali': 'Gita Sigdel',
         '//sanju': 'Anwar Hussain',
         '//saurav': 'Santosh Chhetri',
         '//sunil': 'Suman Thakuri',
